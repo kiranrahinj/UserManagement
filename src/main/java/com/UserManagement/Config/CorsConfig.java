@@ -16,7 +16,7 @@ public class CorsConfig {
                 registry.addMapping("/**")
                         .allowedOrigins("*") // Allow your frontend origin
                         .allowedMethods("*")
-                        .allowedHeaders("*")
+                        .allowedHeaders("*");
 //                        .allowCredentials(true);
             }
         };
