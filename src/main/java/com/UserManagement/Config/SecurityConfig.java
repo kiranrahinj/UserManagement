@@ -25,25 +25,22 @@ public class SecurityConfig {
     private UsersDetailsService usersDetailsService;
     @Autowired
     private JWTAuthFilter jwtAuthFilter;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless applications
                 .cors(Customizer.withDefaults()) // Use default CORS configuration
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**", "/public/**").permitAll() // Publicly accessible endpoints
-                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN") // Only accessible to ADMIN
-                        .requestMatchers("/user/**").hasAnyAuthority("USER") // Only accessible to USER
-                        .requestMatchers("/adminUser/**").hasAnyAuthority("USER", "ADMIN") // Accessible to both USER and ADMIN
+                        .requestMatchers("/auth/**", "/public/**").permitAll()
+                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/user/**").hasAnyAuthority("USER")
+                        .requestMatchers("/adminUser/**").hasAnyAuthority("USER", "ADMIN")
                         .anyRequest().authenticated()) // All other requests must be authenticated
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session management
-                .authenticationProvider(authenticationProvider()) // Set custom authentication provider
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter before the default username/password authentication
-
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
@@ -56,7 +53,8 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 

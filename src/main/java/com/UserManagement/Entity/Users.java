@@ -13,7 +13,6 @@ import java.util.List;
 @Data
 @Table(name="users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class Users implements UserDetails {
-
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
@@ -22,8 +21,6 @@ public class Users implements UserDetails {
     private String password;
     private String city;
     private String role;
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role));

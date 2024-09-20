@@ -22,14 +22,11 @@ public class JwtUtils {
         byte []keyByte= Base64.getDecoder().decode(secretString.getBytes(StandardCharsets.UTF_8));
         this.key=new SecretKeySpec(keyByte,"HmacSHA256");
     }
-
     private SecretKey key;
     @Value("${application.security.jwt.access-token-expiration}")
     private long accessTokenExpire;
-
     @Value("${application.security.jwt.refresh-token-expiration}")
     private long refreshTokenExpire;
-
 
     public String generateToken(UserDetails userDetails){
         return Jwts.builder()
@@ -64,6 +61,4 @@ public class JwtUtils {
     private boolean isTokenExpired(String token) {
         return extractClaims(token,Claims::getExpiration).before(new Date());
     }
-
-
 }
